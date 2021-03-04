@@ -12,7 +12,9 @@
 <ul>
     <% @post.comments.each do |comment| %>
         <% comment_user = User.find_by_id(comment.user_id) %>
-        <li><%= link_to comment_user.username, user_path(comment_user) %> - <%= comment.content %></li>
+        <li>
+        <%= comment.user.username %> says: <%= comment.content %>
+      </li>
     <% end %>
 </ul>
 <h2>Users who have commented on this post:</h2>
@@ -25,7 +27,7 @@
 </ul>
 <h2>Comment Form</h2>
 <%= form_for(@comment) do |f| %>
-    <%= f.hidden_field :post_id %>
+    <%= f.hidden_field :post_id, value: @post.id %>
     <%= f.label "Select User" %><br>
     <%= f.collection_select :user_id, User.all, :id, :username %><br><br>
         <%= f.fields_for :user, User.new do |commentor| %>
